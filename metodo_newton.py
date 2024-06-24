@@ -83,7 +83,10 @@ def newton_method(funcion,x0,epsilon1,epsilon2,M):
     while not terminar:
         # step 2
         grad = np.array(gradiente(funcion,xk))
-        print(grad)
+        gradT=np.transpose(grad)
+        # print('+-----------------------+')
+        # print(grad)
+        # print(gradT)
         # step 3
         if np.linalg.norm(grad) < epsilon1 or k >= M:
             terminar=True
@@ -95,14 +98,17 @@ def newton_method(funcion,x0,epsilon1,epsilon2,M):
             alpha = busquedaDorada(alpha_funcion,epsilon=epsilon2,a=0.0,b=1.0)
 
             matrix_H = hessian_matrix(f=funcion,x=xk,deltaX=0.001)
-            print('matrix_h ',matrix_H)
-            Matrix_inv=inv(matrix_H)
-            Matrix_det=det(matrix_H)
-            V_inv=1/Matrix_det*(Matrix_inv)
-            print('M-1',V_inv)
-            print(Matrix_inv)
-            x_k1 = xk - alpha*grad
-            
+            Matrix_inv=inv(matrix_H) # matriz hessiana inversa
+            # print('Inv :',Matrix_inv)
+            # print('gradiente',grad)
+            quantity = np.dot(gradT,Matrix_inv)
+            quantity2=np.dot(quantity,grad)
+            # print('quantity ',quantity,' quantity2 :',quantity2)
+            # print(f'x_k1  =   xk {xk} - alpha {alpha} * grad{grad}')
+            # print(f' x_k2 =   xk {xk} - alpha {alpha} * matriz_inv*grad = {quantity}  {quantity2} ')
+            # x_k1 = xk - alpha*grad
+            x_k1 = xk-alpha*quantity
+            # print(f'x_k1 {x_k1}  x_k2 {x_k2}')
             #step5
             if np.linalg.norm(x_k1-xk)/(np.linalg.norm(xk)+0.00001) <= epsilon2:
                 terminar = True
@@ -114,4 +120,4 @@ def newton_method(funcion,x0,epsilon1,epsilon2,M):
 himmenblau = lambda x: (((x[0]**2)+x[1]-11)**2) + ((x[0]+(x[1]**2)-7)**2)
 # print(hessian_matrix(himmenblau,np.array([0.0,0.0]),0.001))
 # print('')
-# print('prueba',newton_method(himmenblau,np.array([0.0,0.0]),0.001,0.001,100))
+print('prueba',newton_method(himmenblau,np.array([3.0,2.0]),0.001,0.001,100))
