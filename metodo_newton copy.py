@@ -88,14 +88,15 @@ def newton_method(funcion,x0,epsilon1,epsilon2,M):
         # print(grad)
         # print(gradT)
         # step 3
+        alpha = 1
         if np.linalg.norm(grad) < epsilon1 or k >= M:
             terminar=True
         else:
 
-            def alpha_funcion(alpha):
-                return funcion(xk-alpha*grad)
+            # def alpha_funcion(alpha):
+            #     return funcion(xk-alpha*grad)
             
-            alpha = busquedaDorada(alpha_funcion,epsilon=epsilon2,a=0.0,b=1.0)
+            # alpha = busquedaDorada(alpha_funcion,epsilon=epsilon2,a=0.0,b=1.0)
 
             matrix_H = hessian_matrix(f=funcion,x=xk,deltaX=0.001)
             Matrix_inv=inv(matrix_H) # matriz hessiana inversa
